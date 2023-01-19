@@ -244,7 +244,8 @@ fn L2_9() -> io::Result<()> {
     let x = ch_a.replace("\n\r", "").replace("\n", "").parse::<f32>().unwrap_or(0.0);
     let y = ch_b.replace("\n\r", "").replace("\n", "").parse::<f32>().unwrap_or(0.0);
     println!("x = {x}, y = {y}");
-    println!("is inside: {}", ((x >= -1.0 || x <= 1.0) && (y >= -1.0 || y <= 1.0)));
+
+    println!("is inside: {}", (y >= -1.0 && y <= 1.0) && (x >= -1.0 && x <= 1.0));
     Ok(())
 }
 
