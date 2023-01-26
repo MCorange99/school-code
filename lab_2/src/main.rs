@@ -16,43 +16,43 @@ fn run(name: &str, func: fn() -> io::Result<()>) -> io::Result<()> {
     Ok(())
 }
 
+fn get_str(prompt: &str) -> io::Result<String> {
+    // In rust the variables are not mutable by default, so you have to make them mutable manualy to change the value
+    let mut inp: String = String::new();
+    // Print with no newline
+    print!(prompt);
+    // Flush the stdout buffer so it outputs the text to console
+    stdout().flush()?; // The ? operator will convert and push the error back to the caller function to be dealt with
+    // Read the input to the mutable inp variable which we mark as mutable and we borrow it (&)
+    stdin().read_line(&mut inp)?;
+    Ok(inp)
+}
+
+fn get_int(prompt: &str) -> io::Result<usize> {
+    /**
+     * we return the Ok type with the result usize. This is how rust deals with errors
+     */
+    Ok(
+        // Strip the newlines and parse the String to a number, if it fails to parse it will default to 0
+        get_str(prompt)?
+                    .replace("\n\r", "") 
+                    .replace("\n", "")
+                    .parse::<i32>()
+                    .unwrap_or(0)
+    )
+}
 
 fn L2_1() -> io::Result<()> {
-    let mut ch_a: String = String::new();
-    let mut ch_b: String = String::new();
-
-    print!("Enter a character: "); stdout().flush()?;
-    stdin().read_line(&mut ch_a)?;
-    print!("Enter another character: "); stdout().flush()?;
-    stdin().read_line(&mut ch_b)?;
-    ch_a = ch_a.replace("\n\r", "").replace("\n", "");
-    ch_b = ch_b.replace("\n\r", "").replace("\n", "");
+    ch_a = get_str("Enter character: ")?;
+    ch_b = get_str("Enter another character: ")?;
     println!("'{ch_a}' == '{ch_b}' = {}", ch_a == ch_b);
     Ok(())
 }
 
 fn L2_2() -> io::Result<()> {
-    // In rust the variables are not mutable by default, so you have to make them mutable manualy to change the value
-    let mut ch_a: String = String::new();
-    let mut ch_b: String = String::new();
-    
-    // Print with no newline
-    print!("x: ");
-    // Flush the stdin buffer so it outputs the text to console
-    stdout().flush()?;
-    // Read the input to the mutable ch_a variable 
-    stdin().read_line(&mut ch_a)?;
+    let mut num_a = get_int("x: ")?;
+    let mut num_a = get_int("y: ")?;
 
-    print!("y: ");
-    // The ? operator will convert and push the error back to the caller function to be dealt with
-    stdout().flush()?;
-    stdin().read_line(&mut ch_b)?;
-
-    // Strip the newlines and parse the String to a number, if it fails to parse it will default to 0
-    let mut num_a = ch_a.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-    let mut num_b = ch_b.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-
-    // swap the numbers
     (num_a, num_b) = (num_b, num_a);
 
 
@@ -63,16 +63,8 @@ fn L2_2() -> io::Result<()> {
 }
 
 fn L2_3() -> io::Result<()> {
-    let mut ch_a: String = String::new();
+    let mut num_a = get_int("x: ")?;
     
-    print!("x: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_a)?;
-
-    // Strip the newlines and parse the String to a number, if it fails to parse it will default to 0
-    let num_a = ch_a.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-    
-    //i32::pow(2, 10);
     println!("{}", num_a);
     println!("{} {}", i32::pow(num_a, 3), i32::pow(num_a, 6));
     println!("{} {} {}", i32::pow(num_a, 6), i32::pow(num_a, 3), num_a);
@@ -82,26 +74,9 @@ fn L2_3() -> io::Result<()> {
 }
 
 fn L2_4() -> io::Result<()> {
-    let mut ch_a: String = String::new();
-    let mut ch_b: String = String::new();
-    let mut ch_c: String = String::new();
-    
-    print!("a: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_a)?;
-
-    print!("b: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_b)?;
-    
-    print!("c: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_c)?;
-
-    let mut num_a = ch_a.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-    let mut num_b = ch_b.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-    let mut num_c = ch_c.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-
+    let mut num_a = get_int("a: ")?;
+    let mut num_b = get_int("b: ")?;
+    let mut num_c = get_int("c: ")?;
     // swap the numbers
     (num_a, num_b, num_c) = (num_c, num_b, num_a);
 
@@ -114,31 +89,11 @@ fn L2_4() -> io::Result<()> {
 }
 
 fn L2_5() -> io::Result<()> {
-    let mut ch_a: String = String::new();
-    let mut ch_b: String = String::new();
-    let mut ch_c: String = String::new();
-    let mut ch_d: String = String::new();
-    
-    print!("a: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_a)?;
+    let mut num_a = get_int("a: ")?;
+    let mut num_b = get_int("b: ")?;
+    let mut num_c = get_int("c: ")?;
+    let mut num_d = get_int("d: ")?;
 
-    print!("b: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_b)?;
-    
-    print!("c: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_c)?;
-
-    print!("d: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_d)?;
-
-    let mut num_a = ch_a.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-    let mut num_b = ch_b.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-    let mut num_c = ch_c.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-    let mut num_d = ch_d.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
 
     // swap the numbers
     (num_a, num_b, num_c, num_d) = (num_d, num_c, num_b, num_a);
@@ -153,26 +108,9 @@ fn L2_5() -> io::Result<()> {
 }
 
 fn L2_6() -> io::Result<()> {
-    let mut ch_a: String = String::new();
-    let mut ch_b: String = String::new();
-    let mut ch_c: String = String::new();
-    
-    print!("m1: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_a)?;
-
-    print!("m2: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_b)?;
-    
-    print!("R: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_c)?;
-
-    let m1 = ch_a.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-    let m2 = ch_b.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-    let r = ch_c.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(1);
-
+    let mut m1 = get_int("m1: ")?;
+    let mut m2 = get_int("m2: ")?;
+    let mut r = get_int("r: ")?;
     const G: f64 = 6.673e-8;
 
 
@@ -182,25 +120,10 @@ fn L2_6() -> io::Result<()> {
 }
 
 fn L2_7() -> io::Result<()> {
-    let mut ch_a: String = String::new();
-    let mut ch_b: String = String::new();
-    let mut ch_c: String = String::new();
-    
-    print!("H: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_a)?;
 
-    print!("M: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_b)?;
-    
-    print!("S: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_c)?;
-
-    let H = ch_a.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-    let M = ch_b.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
-    let S = ch_c.replace("\n\r", "").replace("\n", "").parse::<i32>().unwrap_or(0);
+    let H = get_int("H: ")?;
+    let M = get_int("M: ")?;
+    let S = get_int("S: ")?;
 
     if H > 23 {println!("ERROR: hours are formated badly")};
     if M > 59 {println!("ERROR: minutes are formated badly")};
@@ -210,44 +133,52 @@ fn L2_7() -> io::Result<()> {
 }
 
 fn L2_8() -> io::Result<()> {
-    let mut ch_a: String = String::new();
-    let mut ch_b: String = String::new();
 
-    
-    print!("X: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_a)?;
 
-    print!("Y: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_b)?;
-
-    let x = ch_a.replace("\n\r", "").replace("\n", "").parse::<f32>().unwrap_or(0.0);
-    let y = ch_b.replace("\n\r", "").replace("\n", "").parse::<f32>().unwrap_or(0.0);
+    let x = get_int("x: ")?;
+    let y = get_int("y: ")?;
     println!("is inside: {}", (y >= x && y >= -x && y <= 1.0));
     Ok(())
 }
 
 fn L2_9() -> io::Result<()> {
-    let mut ch_a: String = String::new();
-    let mut ch_b: String = String::new();
-
-    
-    print!("X: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_a)?;
-
-    print!("Y: ");
-    stdout().flush()?;
-    stdin().read_line(&mut ch_b)?;
-
-    let x = ch_a.replace("\n\r", "").replace("\n", "").parse::<f32>().unwrap_or(0.0);
-    let y = ch_b.replace("\n\r", "").replace("\n", "").parse::<f32>().unwrap_or(0.0);
-    println!("x = {x}, y = {y}");
+    let x = get_int("x: ")?;
+    let y = get_int("y: ")?;
 
     println!("is inside: {}", (y >= -1.0 && y <= 1.0) && (x >= -1.0 && x <= 1.0));
     Ok(())
 }
+
+fn L2_10() -> io::Result<()> {
+    let x = get_int("Enter a number: ")?;
+
+    println!("    {}    {}    {}    {}", i32::pow(r, 2), i32::pow(r, 3), i32::pow(r, 4), i32::pow(r, 5));
+
+    Ok(())
+}
+
+fn L2_11() -> io::Result<()> {
+    let x = get_int("kambario ilgis: ")?;
+    let y = get_int("kabario plotis: ")?;
+    println!("kambario plotas: {}", x*y);    
+    let k = get_int("plyteliu 1 m2 kaina: ")?;
+
+    println!("visko kaina: {}", x*y*k);
+    Ok(())
+}
+
+fn L2_12() -> io::Result<()> {
+    let x1 = get_int("x1: ")?;
+    let x1 = get_int("x2: ")?;
+    let y1 = get_int("y1: ")?;
+    let y1 = get_int("y2: ")?;
+
+
+    println!("atstumas tar 2 tasku: {}", ((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)).sqrt());
+    Ok(())
+}
+
+
 
 fn main()  -> io::Result<()> {
     run("L2.1", L2_1)?;
@@ -259,6 +190,9 @@ fn main()  -> io::Result<()> {
     run("L2.7", L2_7)?;
     run("L2.8", L2_8)?;
     run("L2.9", L2_9)?;
+    run("L2.10", L2_10)?;
+    run("L2.11", L2_11)?;
+    run("L2.12", L2_12)?;
     
     Ok(())
 }
