@@ -1,19 +1,9 @@
 use std::io::Write;
+use school_code::{add_task, run_task};
 
 
-fn uzduotis_1(x: bool) {
-    println!("=== Uzduotis 1 ===");
-    
-    match x {
-        true => println!("true"),
-        false => println!("false"),
-    }
-    println!("=== Uzduotis 1 ===");
-}
-
-fn uzduotis_2(x: usize) {
-    println!("=== Uzduotis 2 ===");
-    println!("Number: {x}");
+fn uzduotis_2() {
+    let x = get_input_int("iveskite x: ");
 
     match x {
         _ if x > 10 => println!("Daugiau"), 
@@ -21,12 +11,9 @@ fn uzduotis_2(x: usize) {
         _  => println!("Lygu"), 
     }
 
-    
-    println!("=== Uzduotis 2 ===");
 }
 
 fn uzduotis_3() {
-    println!("=== Uzduotis 3 ===");
     let z = get_input_int("iveskite z: ");
 
     if z - 1 >= 0 {
@@ -36,24 +23,20 @@ fn uzduotis_3() {
     } else {
         println!("z = {z}");
         println!("Funkcija neegzistuoja");
+        return;
     }
-    println!("=== Uzduotis 3 ===");
 }
 
 fn uzduotis_4() {
-    println!("=== Uzduotis 4 ===");
     let x = get_input_int("iveskite x: ");
     let y = get_input_int("iveskite y: ");
     
     let f = (y*y - y*2*x + x*x) / (x*x*x - y);
 
     println!("f({x}, {y}) = {f}");
-    
-    println!("=== Uzduotis 4 ===");
 }
 
 fn uzduotis_5() {
-    println!("=== Uzduotis 5 ===");
     let a = get_input_int("iveskite a: ") as f64;
     let x = get_input_int("iveskite x: ") as f64;
 
@@ -69,11 +52,14 @@ fn uzduotis_5() {
 
     println!("a = {a}\nf({x}) = {f}");
 
-    println!("=== Uzduotis 5 ===");
 }
 
-fn uzduotis_6(plot: ((f64, f64), (f64, f64))) {
-    println!("=== Uzduotis 6 ===");
+fn uzduotis_6() {
+    let plot = (
+        (-1.0, 1.0),
+        (1.0, -1.0)
+    );
+
     let x = get_input_int("iveskite cordinate x: ") as f64;
     let y = get_input_int("iveskite cordinate y: ") as f64;
 
@@ -85,47 +71,42 @@ fn uzduotis_6(plot: ((f64, f64), (f64, f64))) {
     } else {
         println!("Inside");
     }
-    println!("=== Uzduotis 6 ===");
 }
 
 fn uzduotis_7() {
-    println!("=== Uzduotis 7 ===");
     let a = get_input_int("a:");
     let b = get_input_int("b:");
     let c = get_input_int("c:");
 
     if a < 1 || b < 1 || c < 1 {
-        println!("Blogi matmenys");
+        println!("Blogi matmenis");
         return;
     }
     println!("Plytos   Turis:  {}", a * b * c);
     println!("Pavirsio Plotas: {}", 2*(a*b+b*c+c*a));
     println!("Briaunu  ilgis:  {}", 4*(a+b+c));
-    println!("=== Uzduotis 7 ===");
+
 }
 
 fn uzduotis_8() {
-    println!("=== Uzduotis 8 ===");
     let n = get_input_int("n:");
     if n % 2 == 0 {
         println!("Lyginis");
     } else {
         println!("Ne lyginis")
     }
-    println!("=== Uzduotis 8 ===");
+
 }
 
 fn uzduotis_9() {
-    println!("=== Uzduotis 9 ===");
     let n = get_input_int("n:");
     for i in 1..=n {
         println!("owo {i}!");
     }
-    println!("=== Uzduotis 9 ===");
+
 }
 
-fn uzduotis_10(){
-    println!("=== Uzduotis 10 ===");
+fn uzduotis_10() {
     let s = get_input_str("Iveskite betkoki sakini: ");
     let mut s = s.as_str();
     
@@ -134,7 +115,7 @@ fn uzduotis_10(){
         s = &s[1..s.len()-1];
         println!("'{s}'");
     }
-    println!("=== Uzduotis 10 ===");
+
 }
 
 fn get_input_int(s: &str) -> isize {
@@ -168,20 +149,32 @@ fn get_input_str(s: &str) -> String {
 }
 
 
-fn main() {
-    uzduotis_1(true);
-    uzduotis_2(69);
-    uzduotis_3();
-    uzduotis_4();
-    uzduotis_5();
-    uzduotis_6((
-        (-1.0, 1.0),
-        (1.0, -1.0)
-    ));
-    uzduotis_7();
-    uzduotis_8();
-    uzduotis_9();
-    uzduotis_10();
-    //* do while neegzistuoja cia nes jo nereikia
+fn main(){
     
+    //?\ Add inline task
+    add_task!(1, || {
+        let x = true;
+        match x {
+            true => println!("true"),
+            false => println!("false"),
+        };
+    });
+
+    //? Add task by pointer
+    add_task!(2, uzduotis_2);
+    add_task!(3, uzduotis_3);
+    add_task!(4, uzduotis_4);
+    add_task!(5, uzduotis_5);
+    add_task!(6, uzduotis_6);
+    add_task!(7, uzduotis_7);
+    add_task!(8, uzduotis_8);
+    add_task!(9, uzduotis_9);
+    add_task!(10, uzduotis_10);
+
+    //* do while neegzistuoja cia nes jo nereikia
+
+    //? Run all tasks
+    run_task!(all);
+    //? Run one task
+    // run_task!(1);
 }
